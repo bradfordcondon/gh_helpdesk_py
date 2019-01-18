@@ -24,10 +24,20 @@ def main(argv):
         print usage
         sys.exit()
 
+    #we'll store who is asking questions, and who is answering questions.
+    user_questions = {}
+    user_answers = {}
+
     with open(input_file) as f:
         data = json.load(f)
 
-    pprint(data)
+    for i in data:
+        store = False
+        for label in i['labels']:
+            if label['name'] == 'question':
+                store = True
+        if store:
+            pprint(i)
 
 
 if __name__ == "__main__":
