@@ -59,10 +59,11 @@ labels="question"
 
 ### plan
 
-Get all issues
-curl -i https://api.github.com/repos/tripal/tripal/issues
+Get all issues that were questions regardless of state
 
+curl -i https://api.github.com/repos/tripal/tripal/issues?labels=question,state=any
 
+https://api.github.com/repos/tripal/tripal/issues?labels=question&state=all
 
 need to deal with pagination and max age first!  see https://developer.github.com/v3/guides/traversing-with-pagination/
 
@@ -82,15 +83,3 @@ We can look at the labels key of each issue for issues tagged with the name "que
     ],
 
 ```
-
-Alternatively we can exclude issues created by certain users (lacey, stephen, bradford, abdullah, shawna?)
-
-Once we have our issues, we can fetch the issue comments:
-
-GET /repos/:owner/:repo/issues/:number/comments
-
-
-curl -i https://api.github.com/repos/tripal/tripal/issues
-
-
-380899565

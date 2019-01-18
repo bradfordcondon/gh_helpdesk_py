@@ -55,6 +55,9 @@ def main(argv):
          #now lookup who answered this issue
          url = 'https://api.github.com/repos/tripal/tripal/issues/' + str(issue_number) + '/comments'
          response = requests.get(url)
+         if (response.status_code != 200):
+             print("Error fetching issue! Error code: " + str(response.status_code))
+             quit()
          rjson = response.json()
 
          for comment in rjson:
