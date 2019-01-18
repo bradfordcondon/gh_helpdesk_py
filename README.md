@@ -61,11 +61,9 @@ labels="question"
 
 Get all issues that were questions regardless of state
 
-curl -i https://api.github.com/repos/tripal/tripal/issues?labels=question,state=any
+curl --anyauth --user username:password https://api.github.com/repos/tripal/tripal/issues?labels=question\&state=all\&per_page=100  > all_questions.json
 
-https://api.github.com/repos/tripal/tripal/issues?labels=question&state=all
-
-need to deal with pagination and max age first!  see https://developer.github.com/v3/guides/traversing-with-pagination/
+need to deal with pagination!!  see https://developer.github.com/v3/guides/traversing-with-pagination/
 
 
 We can look at the labels key of each issue for issues tagged with the name "question" (see example label below)

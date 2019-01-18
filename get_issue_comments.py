@@ -4,7 +4,7 @@ import requests
 
 
 def main(argv):
-    usage = 'get_issue_comments.py -i <input file>'
+    usage = 'get_issue_comments.py -i <input file> -u <username> -p <password>'
     input_file = None
     try:
         opts, args = getopt.getopt(argv, "hi:", ["ifile="])
@@ -18,7 +18,10 @@ def main(argv):
             sys.exit()
         elif opt in ("-i", "--ifile"):
             input_file = arg
-
+        elif opt in ("-u"):
+            username = arg
+        elif opt in ("-u"):
+            username = arg
 
     # open file
     if input_file is None:
@@ -29,6 +32,7 @@ def main(argv):
     #we'll store who is asking questions, and who is answering questions.
     user_questions = {}
     user_answers = {}
+    total_issues = 0
 
     with open(input_file) as f:
         data = json.load(f)
@@ -42,6 +46,7 @@ def main(argv):
     #     if store:
     #         pprint(i)
     for i in data:
+         total_issues = total_issues + 1
          asker = i['user']['login']
          count = 0
          if asker in user_questions:
@@ -54,7 +59,8 @@ def main(argv):
 
          #now lookup who answered this issue
          url = 'https://api.github.com/repos/tripal/tripal/issues/' + str(issue_number) + '/comments'
-         response = requests.get(url)
+         #-u valid_username:valid_password
+         response = requests.get(url, auth=(username, password))
          if (response.status_code != 200):
              print("Error fetching issue! Error code: " + str(response.status_code))
              quit()
@@ -70,6 +76,8 @@ def main(argv):
                  user_answers[answerer] = answer_count
 
     pprint(user_answers)
+
+    print("total number of issues: " + str(total_issues))
 
 
 
