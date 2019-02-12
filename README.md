@@ -81,3 +81,10 @@ We can look at the labels key of each issue for issues tagged with the name "que
     ],
 
 ```
+
+
+# Building the web application
+
+We're going to use Frozen Flask to freeze our flask app.  That means we can generate and serve a static site for now, but, later, upgrade to a dynamic site.
+
+https://pythonhosted.org/Frozen-Flask/
