@@ -1,15 +1,26 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template
 
-import pprint, json
+import pprint, json, pickle
+import os.path
 
 from github_interface import IssueFetcher
 
 # create the application object
 app = Flask(__name__)
 pp = pprint.PrettyPrinter(indent=4)
-gh = IssueFetcher()
-issues = gh.fetchIssues()
+
+#load file from storage if possible, otherwise, use github API to populate
+filepath = "obj/ghstore.obj"
+if os.path.isfile(filepath):
+     pickle.load( open (filepath, "rb"))
+
+else:
+    gh = IssueFetcher()
+    issues = gh.fetchIssues()
+    #pickle for later
+    pickle.dump( issues, open( filepath, "wb" ) )
+
 
 
 @app.route('/')
