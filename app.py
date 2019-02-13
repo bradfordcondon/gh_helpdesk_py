@@ -12,13 +12,17 @@ pp = pprint.PrettyPrinter(indent=4)
 
 #load file from storage if possible, otherwise, use github API to populate
 filepath = "obj/ghstore.obj"
+
 if os.path.isfile(filepath):
+     print("it was a file so loading")
      pickle.load( open (filepath, "rb"))
 
 else:
+    print("Creating GitHub object.  This might take a while...")
     gh = IssueFetcher()
     issues = gh.fetchIssues()
     #pickle for later
+    print("Object created, saving for later.")
     pickle.dump( issues, open( filepath, "wb" ) )
 
 
