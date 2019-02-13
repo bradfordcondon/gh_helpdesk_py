@@ -18,13 +18,14 @@ def home():
 def debug():
 
     issues = gh.fetchIssues()
+    #labels = gh.fetchLabels()
 
-    return (issues)
+    return "yay"
 
 
 @app.route('/labels/<label>')
 def summarize_label(label):
-    # get info for this label
+    #fetch issues with this label
     return
 
 @app.route('/summary')

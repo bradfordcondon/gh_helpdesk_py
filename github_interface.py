@@ -16,6 +16,7 @@ class IssueFetcher:
     password = config.get('GITHUB', 'PASSWORD')
     g = Github(username, password)
     repo = g.get_repo("tripal/tripal")
+    total_user_count = {}
 
     def __init__(self):
         return
@@ -25,38 +26,26 @@ class IssueFetcher:
 
 
     def fetchIssues(self):
-
-        issues = []
         r = self.repo
-        issues = r.get_issues()
+        issues_total = {}
+        for issue in r.get_issues():
+            user_count = {}
+            for comment in issue.get_comments():
+                user = comment.user.login
+                self.addTally(self.total_user_count, user)
+                self.addTally(user_count, user)
+            issues_total[issue.id] = user_count
+        return issues_total
+
+
+    def addTally(self, dict, key):
+        if key in dict:
+             dict[key] += 1
+        else:
+             dict[key] = 1
+        return dict
+
+
+
+
         return issues
-
-
-
-    def fetchLabels(self):
-       repo = self.repo
-       labels = repo.get_labels()
-        for label in labels:
-
-
-
-    def tallyIssueCommentsByUser(self, issue_number):
-
-        #fetch comments for issue
-        url = self.base_url + '/' + str(issue_number) + '/comments'
-        response = requests.get(url, auth=(self.username, self.password))
-        if (response.status_code != 200):
-             print("Error fetching issue! Error code: " + str(response.status_code))
-             return False
-        rjson = response.json()
-        user_answers = {}
-
-        for comment in rjson:
-              answerer = comment['user']['login']
-              answer_count = 0
-              if answerer in user_answers:
-                      answer_count = user_answers[answerer]
-              answer_count = answer_count + 1
-              user_answers[answerer] = answer_count
-
-        return user_answers
