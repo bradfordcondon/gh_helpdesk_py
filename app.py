@@ -1,19 +1,30 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template
 
+import pprint
+
 from github_interface import GitHub
 
 # create the application object
 app = Flask(__name__)
 
-# use decorators to link the function to a url
+gh = GitHub()
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/welcome')
-def welcome():
-    return render_template('home.html')  # render a template
+@app.route('/debug')
+def debug():
+
+    str = pprint.pformat(gh.tallyIssueCommentsByUser(100))
+    return (str)
+
+
+@app.route('/labels/<label>')
+def summarize_label(label):
+    # get info for this label
+
 
 @app.route('/summary')
 def summary(data=None):
