@@ -1,14 +1,14 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template
 
-import pprint
+import pprint, json
 
-from github_interface import GitHub
+from github_interface import IssueFetcher
 
 # create the application object
 app = Flask(__name__)
-
-gh = GitHub()
+pp = pprint.PrettyPrinter(indent=4)
+gh = IssueFetcher()
 
 @app.route('/')
 def home():
@@ -17,14 +17,15 @@ def home():
 @app.route('/debug')
 def debug():
 
-    str = pprint.pformat(gh.tallyIssueCommentsByUser(100))
-    return (str)
+    issues = gh.fetchIssues()
+
+    return (issues)
 
 
 @app.route('/labels/<label>')
 def summarize_label(label):
     # get info for this label
-
+    return
 
 @app.route('/summary')
 def summary(data=None):

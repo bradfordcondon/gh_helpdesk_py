@@ -3,15 +3,19 @@ import sys,os, getopt, math, re, json
 from pprint import pprint
 import requests
 
-class GitHub:
+from github import Github
+
+
+
+class IssueFetcher:
 
 
     config = configparser.ConfigParser()
     config.read('config.env')
-
-    base_url = "https://api.github.com/repos/tripal/tripal/issues/"
     username = config.get('GITHUB', 'USERNAME')
     password = config.get('GITHUB', 'PASSWORD')
+    g = Github(username, password)
+    repo = g.get_repo("tripal/tripal")
 
     def __init__(self):
         return
@@ -20,30 +24,26 @@ class GitHub:
         return  {self.base_url, self.username, self.password}
 
 
-    def fetchIssues():
+    def fetchIssues(self):
 
-        url = self.base_url
-        response = requests.get(url, auth=(self.username, self.password))
-        rjson = response.json()
-
-        return rjson
-
+        issues = []
+        r = self.repo
+        issues = r.get_issues()
+        return issues
 
 
-    defl fetchLabels():
-       url = self.base_url + 'labels'
-       response = requests.get(url, auth=(self.username, self.password))
-       rjson = response.json()
 
-       #import return keys are id: and name:
-       #see: https://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
-       return rjson
+    def fetchLabels(self):
+       repo = self.repo
+       labels = repo.get_labels()
+        for label in labels:
+
 
 
     def tallyIssueCommentsByUser(self, issue_number):
 
         #fetch comments for issue
-        url = self.base_url + str(issue_number) + '/comments'
+        url = self.base_url + '/' + str(issue_number) + '/comments'
         response = requests.get(url, auth=(self.username, self.password))
         if (response.status_code != 200):
              print("Error fetching issue! Error code: " + str(response.status_code))
