@@ -28,7 +28,7 @@ class IssueFetcher:
     def fetchIssues(self):
         r = self.repo
         issues_total = {}
-        for issue in r.get_issues():
+        for issue in r.get_issues(state='all'):
             user_count = {}
             for comment in issue.get_comments():
                 user = comment.user.login

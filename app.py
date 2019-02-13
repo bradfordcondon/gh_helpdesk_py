@@ -9,23 +9,23 @@ from github_interface import IssueFetcher
 app = Flask(__name__)
 pp = pprint.PrettyPrinter(indent=4)
 gh = IssueFetcher()
+issues = gh.fetchIssues()
+
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    total_issues = len(issues)
+    return render_template('home.html', total = total_issues)
 
 @app.route('/debug')
 def debug():
-
-    issues = gh.fetchIssues()
-    #labels = gh.fetchLabels()
 
     return "yay"
 
 
 @app.route('/labels/<label>')
 def summarize_label(label):
-    #fetch issues with this label
+    #fetch issues
     return
 
 @app.route('/summary')
